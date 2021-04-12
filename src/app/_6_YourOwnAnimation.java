@@ -66,7 +66,8 @@ class YourGraphicsContent extends JPanel {
 	int vX = 160;
 	int vY = 20;
 	int diameter = 50;
-	
+	int mittelpunktXd2=_0_Constants.WINDOW_WIDTH/2;
+	int mittelpunktYd2=_0_Constants.WINDOW_HEIGHT/2;
 	
 	//drawing operations should be done in this method
 	@Override protected void paintComponent(Graphics g) {
@@ -74,11 +75,8 @@ class YourGraphicsContent extends JPanel {
 		super.paintComponent(g);
 		time = t.getTimeInSeconds(); 
 		 
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, _0_Constants.WINDOW_WIDTH, _0_Constants.WINDOW_HEIGHT);
+		g.drawLine(mittelpunktXd2,mittelpunktYd2, mittelpunktXd2+10,mittelpunktYd2+20);
 		
-		g.setColor(Color.RED);		
-		g.fillOval(startX + (int)( time * vX), startY + (int)(time * vY), diameter , diameter);
 		
 		/**
 		 * Exercises: 

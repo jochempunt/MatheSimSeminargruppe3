@@ -78,6 +78,7 @@ class YourGraphicsContent extends JPanel {
 		g.drawLine(mittelpunktXd2,mittelpunktYd2, mittelpunktXd2+10,mittelpunktYd2+20);
 		
 		
+		
 		/**
 		 * Exercises: 
 		 * 

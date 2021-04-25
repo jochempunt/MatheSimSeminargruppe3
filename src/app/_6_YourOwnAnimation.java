@@ -69,6 +69,13 @@ class YourGraphicsContent extends JPanel {
 	int mittelpunktXd2=_0_Constants.WINDOW_WIDTH/2;
 	int mittelpunktYd2=_0_Constants.WINDOW_HEIGHT/2;
 	
+	
+	
+	public void paintVektor(double[][]startpoint,double[][]endpoint) {
+		
+	}
+	
+	
 	//drawing operations should be done in this method
 	@Override protected void paintComponent(Graphics g) {
 		

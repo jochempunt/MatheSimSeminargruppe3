@@ -1,6 +1,5 @@
 package utils;
 
-
 public class Matrix_VektorRechner {
 
 	public static int[][] matrixMultiplikation(int[][] matrixA, int[][] matrixB) throws Exception {
@@ -43,24 +42,22 @@ public class Matrix_VektorRechner {
 
 	}
 
-	public static int[][] Kreuz(int[] a, int[] b) {
-		int[] ausgabe = new int[3];
-		ausgabe[0] = a[1] * b[2] - a[2] * b[1];
-		ausgabe[1] = a[2] * b[0] - a[0] * b[2];
-		ausgabe[2] = a[0] * b[1] - a[1] * b[0];
+	public static double[][] Kreuz(double[][] a, double[][] b) {
+		double[] ausgabe = new double[3];
+		ausgabe[0] = a[1][0] * b[2][0] - a[2][0] * b[1][0];
+		ausgabe[1] = a[2][0] * b[0][0] - a[0][0] * b[2][0];
+		ausgabe[2] = a[0][0] * b[1][0] - a[1][0] * b[0][0];
 
-		int matrixausgabe[][] = new int[3][1];
+		double matrixausgabe[][] = new double[3][1];
 
-		for (int i = 0; i <ausgabe.length; i++) {
-			matrixausgabe[i][0]= ausgabe[i];
+		for (int i = 0; i < ausgabe.length; i++) {
+			matrixausgabe[i][0] = ausgabe[i];
 		}
-		
+
 		return matrixausgabe;
 
 	}
 
-	
-	
 	public static double[][] matrixMultiplikationD(double[][] matrixA, double[][] matrixB) throws Exception {
 		double[][] ergebniss = null;
 
@@ -100,55 +97,94 @@ public class Matrix_VektorRechner {
 		System.out.println(ausgabe);
 
 	}
-	
-	
-	public static double[][]roundDoubleVektor(double[][]vektor, int nachkommastellen){
-		double x = Math.pow(10, nachkommastellen);
-		for(int i = 0 ; i< vektor[0].length;i++) {
-			vektor[0][i]=  Math.round(vektor[0][i] * x) / x;
-		}
-		
-		
-		
-		return vektor;
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args) {
-		
-		
-		int[] intArray = {3, 1, 2};
-		int[] intArray2 = {2, 1, 2};
-		
-		
-		
-		double[][]jp = {{0.501,0.50001,0.505}};
-		String s1 = ""; 
-		
-		matrixAusgabeD(roundDoubleVektor(jp, 2));
-		/*int[][] F = Kreuz(intArray, intArray2);
-		matrixAusgabe(F);
-		int[][] ben = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
-		int[][] jochem = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
-		try {
-			matrixAusgabe(matrixMultiplikation(ben,F));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static double[][] roundDoubleVektor(double[][] vektor, int nachkommastellen) {
+		double x = Math.pow(10, nachkommastellen);
+		for (int i = 0; i < vektor.length; i++) {
+			vektor[i][0] = Math.round(vektor[i][0] * x) / x;
 		}
-	}*/
+
+		return vektor;
+
 	}
+
+	public static double[][] lBGradIn3Dkoord(double breitengrad, double längengrad, double r) {
+		double[][] vektor = new double[3][1];
+		breitengrad = Math.toRadians(breitengrad);
+		längengrad = Math.toRadians(längengrad);
+
+		vektor[0][0] = r * Math.cos(breitengrad) * Math.cos(längengrad);
+		vektor[1][0] = r * Math.cos(breitengrad) * Math.sin(längengrad);
+		vektor[2][0] = r * Math.sin(breitengrad);
+		return vektor;
+	}
+
+	public static double betrag(double[][] vektor) {
+		double betrag = Math.sqrt(Math.pow(Math.abs(vektor[0][0]), 2) + Math.pow(Math.abs(vektor[1][0]), 3) + Math.pow(Math.abs(vektor[2][0]), 2));
+		return betrag;
+	}
+
+	public static double winkel(double[][] p, double[][] q) {
+		double skalarProdukt = (p[0][0] * q[0][0]) +( p[1][0] * q[1][0]) +( p[2][0] * q[2][0]);
+		double betragProdukt = betrag(p) * betrag(q);
+		return Math.acos(skalarProdukt/ betragProdukt);
+	}
+
+	public static void main(String[] args) {
+
+		double[][] p = { { 2}, { 0}, { 0  } };
+		double[][] q = { { -2  }, { 0  }, {0 } };
+		
+		matrixAusgabeD(funktion(p, q, 1, winkel(p, q)));
+		
+		
+		System.out.println(winkel(p,q));
+		
+		
+		
+		
+		
+	}
+
+	public static double[][] einheitsVektor(double[][] vektor) {
+		double betrag = betrag(vektor);
+		double[][] einheitsVektor = new double[3][1];
+
+		einheitsVektor[0][0] = vektor[0][0] / betrag;
+		einheitsVektor[1][0] = vektor[1][0] / betrag;
+		einheitsVektor[2][0] = vektor[2][0] / betrag;
+
+		return einheitsVektor;
+	}
+
+	public static double[][]funktion(double[][] p,double[][] q,int r,double t){
+		double [][]n =  einheitsVektor(Kreuz(p, q));
+		double [][]u = einheitsVektor(Kreuz(n, p));
+		double [][]pDach = einheitsVektor(p);
+		
+		
+		double[][] ersteHälfte = new double[3][1];
+		
+		for(int i =0;i<3;i++) {
+			ersteHälfte[i][0]= r* Math.cos(t) * p[i][0];
+		}
+		double[][] zweiteHälfte=new double[3][1];
+		
+		for (int j = 0; j < 3; j++) {
+			zweiteHälfte[j][0] = r* Math.sin(t)*u[j][0];
+		}
+		
+		double[][] ergebnis= new double [3][1];
+		
+		for (int i = 0; i < 3; i++) {
+			ergebnis[i][0]= ersteHälfte[i][0]+ zweiteHälfte[i][0];
+		}
+		
+		
+		return roundDoubleVektor(ergebnis,2) ;
+		
+	}
+
 	public static int[][] rotationsMatrix() {
 
 		return null;

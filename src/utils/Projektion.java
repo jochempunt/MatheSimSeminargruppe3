@@ -2,9 +2,9 @@ package utils;
 
 public class Projektion {
 
-	public static final double alphaDegrees =Math.toRadians(135.0) ;
+	public static final double alphaDegrees =Math.toRadians(150.0) ;
 	
-	public static final double s1Length =  (Math.sqrt(2.0))/2.0;
+	public static final double s1Length =  (Math.sqrt(2.0))/3.0;
 	
 	
 	

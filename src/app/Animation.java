@@ -189,29 +189,14 @@ class GraphicsContent extends JPanel {
 		paintPunktGrad(0, it, 1, g, Color.red, 10);
 		//paintGeodaetische(-33.928992, 30, 0,0, r, g, Color.red,4 );
 		
-		paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.orange,3); // furtwangen - Kapstadt
+		paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.orange,4); // furtwangen - Kapstadt
+		
+		
 		/**
-		 * Exercises:
-		 * 
-		 * 1) Use the same initial conditions ( startX, startY, vX, vY ) as above. Let
-		 * the circle/ball "bounce off the vertical walls", i.e. provide for correct
-		 * changes of velocity whenever the circle/ball "collides elastically with" the
-		 * right-hand or the left-hand frame borders.
-		 * 
-		 * 2) Choose any initial conditions (startX, startY, vX, vY ). Let the
-		 * circle/ball "bounce off the walls", i.e. provide for correct changes of
-		 * velocity whenever the circle/ball "collides elastically with" any of the four
-		 * frame borders.
-		 * 
-		 * 3) Simulate the motion of the ball/circle under the influence of gravity
-		 * Place the circle a some height h above the floor (bottom frame border) with
-		 * initial velocity vY = 0. Let the circle/ball undergo accelerated motion
-		 * toward the bottom. Once the ball hits the floor, its velocity is reversed
-		 * (fully elastic collision), the ensuing upward motion is decelerated until the
-		 * circle/ball comes to rest a height h, etc. * 4) As under 3) except that there
-		 * is kinetic energy loss at the collision
-		 * 
-		 * 
+		 * To do: 	Drahtgittermodell + Umrisselipse ;
+		 * 			Vorne + Hinten unterscheiden
+		 * 			Ortsauswahl
+		 * 		 
 		 */
 
 	}

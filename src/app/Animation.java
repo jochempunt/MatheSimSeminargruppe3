@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class _6_YourOwnAnimation {
+public class Animation {
 
 	private static JFrame frame;
 

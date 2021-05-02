@@ -62,11 +62,7 @@ class GraphicsContent extends JPanel {
 		return new Dimension(_0_Constants.WINDOW_WIDTH, _0_Constants.WINDOW_HEIGHT);
 	}
 
-	int startX = 20;
-	int startY = 20;
-	int vX = 160;
-	int vY = 20;
-	int diameter = 50;
+	
 	int mittelpunktXd = _0_Constants.WINDOW_WIDTH / 2;
 	int mittelpunktYd= _0_Constants.WINDOW_HEIGHT / 2;
 	int it = 0;

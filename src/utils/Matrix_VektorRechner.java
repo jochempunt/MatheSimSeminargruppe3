@@ -132,13 +132,33 @@ public class Matrix_VektorRechner {
 
 	public static void main(String[] args) {
 
-		double[][] p = { { 2}, { 0}, { 0  } };
-		double[][] q = { { -2  }, { 0  }, {0 } };
-		
-		matrixAusgabeD(funktion(p, q, 1, winkel(p, q)));
 		
 		
-		System.out.println(winkel(p,q));
+		
+		double[][] p = lBGradIn3Dkoord(48.05 , 8.21, 1);
+		double[][] q = lBGradIn3Dkoord(-33.92,18.41 , 1);
+		System.out.println("vektor p = ");
+		matrixAusgabeD(p);
+		System.out.println("vector q = ");
+		matrixAusgabeD(q);
+		
+		System.out.println("betrag von p = " +betrag(p));
+		System.out.println("betrag von q = "+ betrag(q));
+		System.out.println("winkel zw. p und q = " +Math.toDegrees(winkel(p, q)));
+		System.out.println("winkel zw. p und q = " +(winkel(p, q)));
+		
+		
+		//matrixAusgabeD(einheitsVektor(p));
+		System.out.println("kreuzprodukt von p und q = ");
+		matrixAusgabeD(Kreuz(p, q));
+		System.out.println("betrag von p x q = " + betrag(Kreuz(p, q)));
+		System.out.println("einheitsvektor von n =  ");
+		matrixAusgabeD(einheitsVektor(Kreuz(p, q)));
+		System.out.println("einheitsvektor von u = " );
+		matrixAusgabeD(einheitsVektor(Kreuz(einheitsVektor(Kreuz(p, q)),p)));
+		
+		
+		
 		
 		
 		
@@ -161,6 +181,7 @@ public class Matrix_VektorRechner {
 		double [][]n =  einheitsVektor(Kreuz(p, q));
 		double [][]u = einheitsVektor(Kreuz(n, p));
 		double [][]pDach = einheitsVektor(p);
+		
 		
 		
 		double[][] ersteHälfte = new double[3][1];

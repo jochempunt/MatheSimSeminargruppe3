@@ -4,7 +4,7 @@ public class Projektion {
 
 	public static final double alphaDegrees =Math.toRadians(150.0) ;
 	
-	public static final double s1Length =  (Math.sqrt(2.0))/3.0;
+	public static final double s1Length =  0.5;
 	
 	
 	
@@ -28,7 +28,7 @@ public class Projektion {
 		
 		
 		double[][] vektor1 = {{1},{0},{0}};
-		
+		System.out.println(Math.sqrt(2.0)/3.0);
 		try {
 			Matrix_VektorRechner.matrixAusgabeD(projektiere(vektor1));
 		} catch (Exception e) {

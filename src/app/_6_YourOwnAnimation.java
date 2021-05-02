@@ -176,7 +176,7 @@ class YourGraphicsContent extends JPanel {
 
 		int r = 1;
 
-//		paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.green,5); // furtwangen - Kapstadt
+	    
 
 		// paintGeodaetische(-33.928992, 18.417396, -33.8548157,151.2164539, r, g,
 		// Color.yellow,5); // kapstadt -- sidney
@@ -190,8 +190,9 @@ class YourGraphicsContent extends JPanel {
 		it++;
 		paintGeodaetische(0, 0, 0, 179, r, g, Color.blue, 8);
 		paintPunktGrad(0, it, 1, g, Color.red, 10);
-		paintGeodaetische(-33.928992, 30, 0,0, r, g, Color.red,4 );
+		//paintGeodaetische(-33.928992, 30, 0,0, r, g, Color.red,4 );
 		
+		paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.orange,3); // furtwangen - Kapstadt
 		/**
 		 * Exercises:
 		 * 

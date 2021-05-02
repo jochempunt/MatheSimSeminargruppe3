@@ -18,7 +18,7 @@ public class Projektion {
 		
 		
 		
-		return Matrix_VektorRechner.roundDoubleVektor(resultVektor, 2);
+		return Matrix_VektorRechner.roundDoubleVektor(resultVektor, 4);
 		
 	}
 	
@@ -27,10 +27,15 @@ public class Projektion {
 	public static void main(String[] args) {
 		
 		
-		double[][] vektor1 = {{1},{0},{0}};
-		System.out.println(Math.sqrt(2.0)/3.0);
+		
+		
+		
+		
 		try {
-			Matrix_VektorRechner.matrixAusgabeD(projektiere(vektor1));
+			System.out.println("Furtwangen in 3D koord:");
+			Matrix_VektorRechner.matrixAusgabeD(projektiere(Matrix_VektorRechner.lBGradIn3Dkoord(48.052,8.216,1)));
+			System.out.println("Kapstadt in 3D koord:");
+			Matrix_VektorRechner.matrixAusgabeD(projektiere(Matrix_VektorRechner.lBGradIn3Dkoord(-33.928,18.417,1)));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

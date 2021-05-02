@@ -66,6 +66,7 @@ class GraphicsContent extends JPanel {
 	int mittelpunktXd = _0_Constants.WINDOW_WIDTH / 2;
 	int mittelpunktYd= _0_Constants.WINDOW_HEIGHT / 2;
 	int it = 0;
+	int diameter=5;
 	
 	
 	int vergrößerung = 100;

@@ -39,7 +39,7 @@ public class Animation {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Add a JPanel as the new drawing surface
-		JPanel panel = new YourGraphicsContent(thread);
+		JPanel panel = new GraphicsContent(thread);
 		frame.add(panel);
 		frame.pack(); // adjusts size of the JFrame to fit the size of it's components
 		frame.setVisible(true);
@@ -47,13 +47,13 @@ public class Animation {
 }
 
 @SuppressWarnings("serial")
-class YourGraphicsContent extends JPanel {
+class GraphicsContent extends JPanel {
 
 	// panel has a single time tracking thread associated with it
 	private ApplicationTime t;
 	private double time;
 
-	public YourGraphicsContent(ApplicationTime thread) {
+	public GraphicsContent(ApplicationTime thread) {
 		this.t = thread;
 	}
 

@@ -8,6 +8,7 @@ import calc.Projektion;
 import utils.ApplicationTime;
 import utils.FrameUpdate;
 
+import java.util.Iterator;
 import java.util.Timer;
 
 import java.awt.Graphics;
@@ -69,7 +70,7 @@ class GraphicsContent extends JPanel {
 	int diameter=5;
 	
 	
-	int vergrößerung = 100;
+	int vergrößerung = 150;
 
 	public void paintVektor(double[][] startpoint, double[][] endpoint) {
 
@@ -133,13 +134,45 @@ class GraphicsContent extends JPanel {
 		g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
 
 	}
+	
+	
+	public void paintUmrissellipse(Graphics g, Color c, int dicke) {
+		
+		for(double i =0; i < 2*Math.PI;i= i + 0.006 ) {
+			
+			try {
+				double point[][] = Matrix_VektorRechner.roundDoubleVektor(Projektion.umrissellipse(1, i),2);
+				
+				
+				point = Projektion.projektiere(point);
+				int[] verschobevektor = new int[2];
+
+				verschobevektor[0] = (int) (point[0][0] * vergrößerung);
+
+				verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
+
+				verschobevektor[1] = (int) (point[1][0] * (vergrößerung));
+
+				verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
+
+				g.setColor(c);
+				g.fillOval(verschobevektor[0] -  dicke/2, verschobevektor[1]-dicke/2 , dicke, dicke);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+	
+	
 
 	public void paintVektorProjekted(double[][] vektor, Graphics g, Color c, int dicke) {
 		double projeVektor[][] = null;
 		try {
 			projeVektor = Projektion.projektiere(vektor);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int[] verschobevektor = new int[2];
@@ -153,6 +186,7 @@ class GraphicsContent extends JPanel {
 		verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 		g.setColor(c);
 		g.drawLine(_0_Constants.WINDOW_WIDTH/2,_0_Constants.WINDOW_HEIGHT/2, verschobevektor[0], verschobevektor[1]);
+		
 		
 	}
 
@@ -179,18 +213,25 @@ class GraphicsContent extends JPanel {
 		// Color.yellow,5); // kapstadt -- sidney
 		
 
-		for (int i = 0; i < 360; i++) {
-			paintPunktGrad(i, 0, 1, g, Color.black, 8);
-		}
+		paintGeodaetische(0,0, 90, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,45, 89, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,-45, 89, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,89, 89, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,-89, 89, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,135, 89, 0, r, g, Color.black, 6);
+		paintGeodaetische(0,-135, 89, 0, r, g, Color.black, 6);
 		paintPunktGrad(it, 0, 1, g, Color.red, 10);
 		
-		it++;
-		paintGeodaetische(0, 0, 0, 179, r, g, Color.blue, 8);
+		
+		paintGeodaetische(0, 0, 0, 179, r, g, Color.black, 8);
+		
+		
+	
 		paintPunktGrad(0, it, 1, g, Color.red, 10);
 		//paintGeodaetische(-33.928992, 30, 0,0, r, g, Color.red,4 );
-		
-		paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.orange,4); // furtwangen - Kapstadt
-		
+		it++;
+		//paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g, Color.orange,4); // furtwangen - Kapstadt
+		paintUmrissellipse(g, Color.black, 6);
 		
 		/**
 		 * To do: 	Drahtgittermodell + Umrisselipse ;

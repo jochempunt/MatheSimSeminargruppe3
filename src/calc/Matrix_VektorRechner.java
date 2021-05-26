@@ -1,5 +1,7 @@
 package calc;
 
+import java.awt.Color;
+
 public class Matrix_VektorRechner {
 
 	public static int[][] matrixMultiplikation(int[][] matrixA, int[][] matrixB) throws Exception {
@@ -158,6 +160,9 @@ public class Matrix_VektorRechner {
 		matrixAusgabeD(einheitsVektor(Kreuz(einheitsVektor(Kreuz(p, q)),p)));
 		
 		
+		double c [][] = {{40},{50},{60}};
+		
+		System.out.println(vornHintenColor(c, Color.blue));
 		
 		
 		
@@ -165,6 +170,77 @@ public class Matrix_VektorRechner {
 		
 		
 	}
+	
+	protected static Color desaturate(Color color) {
+		
+		
+		
+		if(color.equals(Color.black)) {
+			
+			return Color.gray;
+			
+			
+		}
+		
+		
+		
+		float[] hsbVal = new float[3];
+		
+		
+		hsbVal = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsbVal);
+		
+		hsbVal[1] = hsbVal[1]/1.5f;
+		
+		return Color.getHSBColor(hsbVal[0], hsbVal[1], hsbVal[2]);
+		
+		
+	}
+	
+	
+	
+	public static boolean vorne(double[][] punkt) {
+		
+		double wert = Math.cos(Projektion.phi)*Math.cos(Projektion.teta)*punkt[0][0] + Math.sin(Projektion.phi)*Math.cos(Projektion.teta)*punkt[1][0]+ Math.sin(Projektion.teta)*punkt[2][0];
+		
+		
+	
+		
+		
+		if(wert<0) {
+			return false;
+		}else {
+			return true;
+			
+		}
+		
+	}
+	
+	
+	
+	public static Color vornHintenColor(double[][] punkt,Color pColor) {
+		
+		
+		
+		double wert = Math.cos(Projektion.phi)*Math.cos(Projektion.teta)*punkt[0][0] + Math.sin(Projektion.phi)*Math.cos(Projektion.teta)*punkt[1][0]+ Math.sin(Projektion.teta)*punkt[2][0];
+		
+	
+		
+		
+		if(wert<0) {
+			
+			return desaturate(pColor);
+		}else {
+		
+			return pColor.darker();
+			
+		}
+		
+		
+		
+		
+	}
+	
+	
 
 	public static double[][] einheitsVektor(double[][] vektor) {
 		double betrag = betrag(vektor);

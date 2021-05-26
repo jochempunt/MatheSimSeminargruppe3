@@ -2,10 +2,15 @@ package calc;
 
 public class Projektion {
 
-	public static final double alphaDegrees =Math.toRadians(135) ;
+	public static  double alphaDegrees =Math.toRadians(135) ;
 	
-	public static final double s1Length =  0.5;
+	public static  double s1Length =  0.5;
 	
+	public static double phi = Math.atan(s1Length*Math.sin(alphaDegrees));
+	
+	public static double teta = Math.atan(-s1Length*Math.cos(alphaDegrees)*Math.cos(phi));
+	
+	 
 	
 	
 	
@@ -16,17 +21,12 @@ public class Projektion {
 		
 		double[][]resultVektor = Matrix_VektorRechner.matrixMultiplikationD(projectionMatrix,vektor);
 		
-		
-		
 		return Matrix_VektorRechner.roundDoubleVektor(resultVektor, 2);
 		
 	}
 	
 	
 	public static double[][] umrissellipse(int r, double t) throws Exception{
-		double phi = Math.atan(s1Length*Math.sin(alphaDegrees));
-		double teta =Math.atan(-s1Length*Math.cos(alphaDegrees)*Math.cos(phi));
-		
 		
 		
 		double[][] point = {{0},{Math.cos(t)},{Math.sin(t)}};
@@ -39,12 +39,10 @@ public class Projektion {
 		drehungX3 = Matrix_VektorRechner.matrixMultiplikationD(drehungX3,point);
 		point = Matrix_VektorRechner.matrixMultiplikationD(drehungX2,drehungX3);
 		
-		Matrix_VektorRechner.matrixAusgabeD(point);
+		
 		
 		
 		return point;
-		
-		
 		
 	}
 	

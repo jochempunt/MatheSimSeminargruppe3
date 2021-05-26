@@ -89,6 +89,8 @@ class GraphicsContent extends JPanel {
 		for(Punkt p: punktListeVorne) {
 			paintPunktObjekt(p, g);
 		}
+		
+		punktListeVorne.clear();
 	}
 	
 	
@@ -224,6 +226,11 @@ class GraphicsContent extends JPanel {
 				verschobevektor[1]);
 
 	}
+	
+	
+	static double f =150;
+	static double winkel = 2.0;
+	
 
 	// drawing operations should be done in this method
 	@Override
@@ -242,41 +249,54 @@ class GraphicsContent extends JPanel {
 		double[][] x1 = { { 1 }, { 0 }, { 0 } };
 		double[][] x2 = { { 0 }, { 1 }, { 0 } };
 		double[][] x3 = { { 0 }, { 0 }, { 1 } };
-
-		paintVektorProjekted(x1, g, Color.red, diameter);
+		g.clearRect(0,0 ,_0_Constants.WINDOW_WIDTH, _0_Constants.WINDOW_HEIGHT);
+		 paintVektorProjekted(x1, g, Color.red, diameter);
 		paintVektorProjekted(x2, g, Color.green, diameter);
 		paintVektorProjekted(x3, g, Color.blue, diameter);
-
+		
 		int r = 1;
 
 		// paintGeodaetische(-33.928992, 18.417396, -33.8548157,151.2164539, r, g,
 		// Color.yellow,5); // kapstadt -- sidney
 
-		paintGeodaetische(0, 0, 90, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 20, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 40, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 60, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 80, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 100, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 120, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 140, -89, 0, r, g, Color.blue, 3);
-		paintGeodaetische(0, 160, -89, 0, r, g, Color.blue, 3);
-
+		paintGeodaetische(0, 0, 90, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 20, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 40, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 60, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 80, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 100, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 120, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 140, -89, 0, r, g, Color.black, 3);
+		paintGeodaetische(0, 160, -89, 0, r, g, Color.black, 3);
+	
 		// paintPunktGrad(it, 0, 1, g, Color.red, 10);
 
-		paintGeodaetische(0, 0, 0, 179, r, g, Color.blue, 3);
+		paintGeodaetische(0, 0, 0, 179, r, g, Color.black, 3);
 
 		// paintPunktGrad(0, it, 1, g, Color.red, 10);
-		// paintGeodaetische(-33.928992, 30, 0,0, r, g, Color.red,4 );
+		paintGeodaetische(0, 0, -10,-119.417932, r, g, Color.blue,4 );
 		it++;
-		// paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g,
-		// Color.orange,4); // furtwangen - Kapstadt
+		//paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g,Color.CYAN,4); // furtwangen - Kapstadt
 		 
 		
 		paintVorne(g);
 		
 		
-		paintUmrissellipse(g,Color.blue,5);
+		
+		
+		
+		paintUmrissellipse(g,Color.black,9);
+		
+		
+		//Projektion.alphaDegrees = f;
+		//f=f+0.3;
+		
+		Projektion.s1Length =0.5*Math.sin(winkel);
+		
+		winkel=winkel-0.2;
+		
+		
+		
 		
 		
 		/**

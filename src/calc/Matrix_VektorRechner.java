@@ -189,7 +189,7 @@ public class Matrix_VektorRechner {
 		
 		hsbVal = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsbVal);
 		
-		hsbVal[1] = hsbVal[1]/1.5f;
+		hsbVal[1] = hsbVal[1]/2.0f;
 		
 		return Color.getHSBColor(hsbVal[0], hsbVal[1], hsbVal[2]);
 		
@@ -231,7 +231,7 @@ public class Matrix_VektorRechner {
 			return desaturate(pColor);
 		}else {
 		
-			return pColor.darker();
+			return pColor;
 			
 		}
 		

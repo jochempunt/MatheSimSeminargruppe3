@@ -1,7 +1,10 @@
 package app;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import calc.Matrix_VektorRechner;
 import calc.Projektion;
@@ -15,6 +18,8 @@ import java.util.Timer;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +27,16 @@ import java.awt.Dimension;
 public class Animation {
 
 	private static JFrame frame;
+	private static JPanel contentPane;
+	public static boolean ausführen = false;
+	public static JComboBox ort1;
+	public static JComboBox ort2;
+
+	public static Ort[] orteListe = { new Ort(48.050144, 8.201419, "Furtwangen"),
+			new Ort(-33.867487, 151.206990, "Sidney"), new Ort(40.712784, -74.005941, "New York"),
+			new Ort(-33.924869, 18.424055, "Kapstadt"), new Ort(39.039219, 125.762524, "Pjöngjang"),
+			new Ort(59.934280, 30.335099, "St.Petersburg") };
+	public static boolean wobble = false;
 
 	public static void main(String[] args) {
 
@@ -41,11 +56,61 @@ public class Animation {
 		// Create a new frame
 		frame = new JFrame("Mathematik und Simulation");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		frame.setBounds(100, 100, 1000, 532);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		frame.setContentPane(contentPane);
+		contentPane.setLayout(null);
 		// Add a JPanel as the new drawing surface
+
 		JPanel panel = new GraphicsContent(thread);
+		panel.setBounds(0, 0, 500, 500);
 		frame.add(panel);
-		frame.pack(); // adjusts size of the JFrame to fit the size of it's components
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(498, 0, 486, 493);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+
+		JButton btnNewButton = new JButton("Best\u00E4tigen");
+
+		btnNewButton.setBounds(46, 219, 116, 46);
+		panel_1.add(btnNewButton);
+
+		ort1 = new JComboBox<Ort>(orteListe);
+		ort1.setBounds(192, 231, 88, 26);
+
+		panel_1.add(ort1);
+
+		ort2 = new JComboBox<Ort>(orteListe);
+		ort2.setBounds(310, 231, 88, 26);
+		panel_1.add(ort2);
+
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ort1.setEnabled(false);
+				ort2.setEnabled(false);
+				ausführen = true;
+
+			}
+		});
+
+		JButton btnNewButton_1 = new JButton("Wobble");
+		btnNewButton_1.setBounds(46, 276, 116, 46);
+		panel_1.add(btnNewButton_1);
+
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (wobble) {
+					wobble = false;
+				} else {
+					wobble = true;
+				}
+
+			}
+		});
+
+		
 		frame.setVisible(true);
 	}
 }
@@ -72,55 +137,99 @@ class GraphicsContent extends JPanel {
 	int diameter = 5;
 
 	int vergrößerung = 125;
-	
-	
-	ArrayList<Punkt> punktListeVorne  = new ArrayList<Punkt>();
-	
-	
-	
+
+	double bewegung = 0.0;
+
+	ArrayList<Punkt> punktListeVorne = new ArrayList<Punkt>();
+
 	public void paintPunktObjekt(Punkt pPunkt, Graphics g) {
 		int[] pos = pPunkt.position;
 		g.setColor(pPunkt.color);
-		g.fillOval(pos[0] - pPunkt.Dicke/2, pos[1] - pPunkt.Dicke/2,pPunkt.Dicke,pPunkt.Dicke);
+		g.fillOval(pos[0] - pPunkt.Dicke / 2, pos[1] - pPunkt.Dicke / 2, pPunkt.Dicke, pPunkt.Dicke);
 	}
-	
-	
+
 	public void paintVorne(Graphics g) {
-		for(Punkt p: punktListeVorne) {
+		for (Punkt p : punktListeVorne) {
 			paintPunktObjekt(p, g);
 		}
-		
+
 		punktListeVorne.clear();
 	}
-	
-	
 
 	public void paintVektor(double[][] startpoint, double[][] endpoint) {
 
 	}
 
-	public void paintGeodaetische(double bg1, double lg1, double bg2, double lg2, int r, Graphics g, Color c,
-			int dicke) {
+	public void paintAnimatedGeoD(double bg1, double lg1, double bg2, double lg2, int r, Graphics g, Color c, int dicke,
+			double t) {
+		double[][] p = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg1, lg1, r), 2);
+		double[][] q = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg2, lg2, r), 2);
+		double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t * 15);
+		
+		boolean vorn = Matrix_VektorRechner.vorne(ergebnissPunkt);
+		Color punktColor = null;
+
+		if (t < (Matrix_VektorRechner.winkel(p, q) / 15)) {
+
+			punktColor = Matrix_VektorRechner.vornHintenColor(ergebnissPunkt, c);
+			g.setColor(punktColor);
+			try {
+				ergebnissPunkt = Projektion.projektiere(ergebnissPunkt);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+
+			int[] verschobevektor = new int[2];
+
+			verschobevektor[0] = (int) (ergebnissPunkt[0][0] * vergrößerung);
+
+			verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
+
+			verschobevektor[1] = (int) (ergebnissPunkt[1][0] * vergrößerung);
+
+			verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
+
+			
+			paintGeodaetische(bg1, lg1, bg2, lg2, r, g, c, dicke / 3, bewegung * 15);
+			if (!vorn) {
+				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
+			} else {
+
+				punktListeVorne.add(new Punkt(verschobevektor, punktColor, dicke));
+			}
+			bewegung += 0.003;
+
+		} else {
+			Animation.ausführen = false;
+			Animation.ort1.setEnabled(true);
+			Animation.ort2.setEnabled(true);
+			bewegung = 0.0;
+		}
+
+	}
+
+	public void paintGeodaetische(double bg1, double lg1, double bg2, double lg2, int r, Graphics g, Color c, int dicke,
+			double max) {
 		double[][] p = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg1, lg1, r), 2);
 		double[][] q = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg2, lg2, r), 2);
 
-		for (double t = 0; t < Math.PI * 2; t = t + 0.006) {
+		for (double t = 0; t < max; t = t + 0.006) {
 			double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t);
-			//Matrix_VektorRechner.matrixAusgabeD(ergebnissPunkt);
+		
 			boolean vorn = Matrix_VektorRechner.vorne(ergebnissPunkt);
 			Color punktColor = null;
 			if (t < Matrix_VektorRechner.winkel(p, q)) {
-				
+
 				punktColor = Matrix_VektorRechner.vornHintenColor(ergebnissPunkt, c);
 				g.setColor(punktColor);
 			} else {
 				punktColor = Matrix_VektorRechner.vornHintenColor(ergebnissPunkt, Color.black);
-				
+
 				g.setColor(punktColor);
-				
+
 			}
-			
-			
+
 			try {
 				ergebnissPunkt = Projektion.projektiere(ergebnissPunkt);
 			} catch (Exception e) {
@@ -139,14 +248,12 @@ class GraphicsContent extends JPanel {
 			verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 
 			
-			// g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2,
-			// dicke, dicke);
-			
-			if(!vorn) {
+
+			if (!vorn) {
 				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
-			}else {
-			
-				punktListeVorne.add(new Punkt(verschobevektor,punktColor,dicke));
+			} else {
+
+				punktListeVorne.add(new Punkt(verschobevektor, punktColor, dicke));
 			}
 		}
 
@@ -196,6 +303,7 @@ class GraphicsContent extends JPanel {
 
 				g.setColor(c);
 				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -221,89 +329,67 @@ class GraphicsContent extends JPanel {
 
 		verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 		g.setColor(c);
-		
+
 		g.drawLine(_0_Constants.WINDOW_WIDTH / 2, _0_Constants.WINDOW_HEIGHT / 2, verschobevektor[0],
 				verschobevektor[1]);
 
 	}
-	
-	
-	static double f =150;
+
+	static double f = 150;
 	static double winkel = 2.0;
-	
 
 	// drawing operations should be done in this method
 	@Override
 	protected void paintComponent(Graphics g) {
 
-		
-		
-		
 		Graphics2D g2d;
 		g2d = (Graphics2D) g;
 		g2d.setStroke(new BasicStroke(2.0f));
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		super.paintComponent(g);
-		
 
 		double[][] x1 = { { 1 }, { 0 }, { 0 } };
 		double[][] x2 = { { 0 }, { 1 }, { 0 } };
 		double[][] x3 = { { 0 }, { 0 }, { 1 } };
-		g.clearRect(0,0 ,_0_Constants.WINDOW_WIDTH, _0_Constants.WINDOW_HEIGHT);
-		 paintVektorProjekted(x1, g, Color.red, diameter);
-		paintVektorProjekted(x2, g, Color.green, diameter);
-		paintVektorProjekted(x3, g, Color.blue, diameter);
-		
+		g.clearRect(0, 0, _0_Constants.WINDOW_WIDTH, _0_Constants.WINDOW_HEIGHT);
+		// paintVektorProjekted(x1, g, Color.red, diameter);
+		// paintVektorProjekted(x2, g, Color.green, diameter);
+		// paintVektorProjekted(x3, g, Color.blue, diameter);
+
 		int r = 1;
 
-		// paintGeodaetische(-33.928992, 18.417396, -33.8548157,151.2164539, r, g,
-		// Color.yellow,5); // kapstadt -- sidney
+		double tmax = Math.PI * 2;
 
-		paintGeodaetische(0, 0, 90, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 20, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 40, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 60, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 80, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 100, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 120, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 140, -89, 0, r, g, Color.black, 3);
-		paintGeodaetische(0, 160, -89, 0, r, g, Color.black, 3);
-	
-		// paintPunktGrad(it, 0, 1, g, Color.red, 10);
+		paintGeodaetische(0, 0, 90, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 20, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 40, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 60, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 80, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 100, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 120, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 140, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 160, -89, 0, r, g, Color.black, 3, tmax);
+		paintGeodaetische(0, 0, 0, 179, r, g, Color.black, 3, tmax);
 
-		paintGeodaetische(0, 0, 0, 179, r, g, Color.black, 3);
+		Ort ort1 = (Ort) Animation.ort1.getSelectedItem();
+		Ort ort2 = (Ort) Animation.ort2.getSelectedItem();
 
-		// paintPunktGrad(0, it, 1, g, Color.red, 10);
-		paintGeodaetische(0, 0, -10,-119.417932, r, g, Color.blue,4 );
-		it++;
-		//paintGeodaetische(48.0529805,8.2163467, -33.928992, 18.417396,r, g,Color.CYAN,4); // furtwangen - Kapstadt
-		 
-		
+		if (Animation.ausführen) {
+			paintAnimatedGeoD(ort1.breitengrad, ort1.längengrad, ort2.breitengrad, ort2.längengrad, r, g, Color.red, 20,
+					bewegung);
+		}
+
+		paintUmrissellipse(g, Color.black, 5);
 		paintVorne(g);
-		
-		
-		
-		
-		
-		paintUmrissellipse(g,Color.black,9);
-		
-		
-		//Projektion.alphaDegrees = f;
-		//f=f+0.3;
-		
-		Projektion.s1Length =0.5*Math.sin(winkel);
-		
-		winkel=winkel-0.2;
-		
-		
-		
-		
-		
-		/**
-		 * To do: Drahtgittermodell + Umrisselipse ; Vorne + Hinten unterscheiden
-		 * Ortsauswahl
-		 * 
-		 */
+
+		if (Animation.wobble) {
+			Projektion.s1Length = 0.5 * Math.sin(winkel);
+			winkel = winkel - 0.3;
+		} else {
+			Projektion.s1Length = 0.5;
+
+		}
+	
 
 	}
 }

@@ -122,7 +122,7 @@ public class Matrix_VektorRechner {
 	}
 
 	public static double betrag(double[][] vektor) {
-		double betrag = Math.sqrt(Math.pow(Math.abs(vektor[0][0]), 2) + Math.pow(Math.abs(vektor[1][0]), 3) + Math.pow(Math.abs(vektor[2][0]), 2));
+		double betrag = Math.sqrt(Math.pow(Math.abs(vektor[0][0]), 2) + Math.pow(Math.abs(vektor[1][0]), 2) + Math.pow(Math.abs(vektor[2][0]), 2));
 		return betrag;
 	}
 

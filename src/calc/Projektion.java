@@ -2,7 +2,7 @@ package calc;
 
 public class Projektion {
 
-	public static  double alphaDegrees =Math.toRadians(135) ;
+	public static  double alphaDegrees =Math.toRadians(145) ;
 	
 	public static  double s1Length =  0.5;
 	

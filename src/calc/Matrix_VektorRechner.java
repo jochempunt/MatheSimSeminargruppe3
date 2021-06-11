@@ -135,10 +135,22 @@ public class Matrix_VektorRechner {
 	public static void main(String[] args) {
 
 		
+		System.out.println("-7 mod 2 = "+ (-3)%5);
+		
+		double[][] p = lBGradIn3Dkoord(48.053 , 8.216, 1);
+		double[][] q = lBGradIn3Dkoord(-33.929,18.417 , 1);
+		
+		double[][] pp = {{0.662},{0.096},{0,744}};
+		
+		double[][] qq = {{0.787},{0.262},{-0,558}};
 		
 		
-		double[][] p = lBGradIn3Dkoord(48.05 , 8.21, 1);
-		double[][] q = lBGradIn3Dkoord(-33.92,18.41 , 1);
+		double [][]n = Kreuz(p,q);
+		System.out.println("n=" );
+		matrixAusgabeD(n);
+		
+		
+		
 		System.out.println("vektor p = ");
 		matrixAusgabeD(p);
 		System.out.println("vector q = ");
@@ -151,13 +163,15 @@ public class Matrix_VektorRechner {
 		
 		
 		//matrixAusgabeD(einheitsVektor(p));
-		System.out.println("kreuzprodukt von p und q = ");
+		System.out.println("n= ");
 		matrixAusgabeD(Kreuz(p, q));
-		System.out.println("betrag von p x q = " + betrag(Kreuz(p, q)));
-		System.out.println("einheitsvektor von n =  ");
-		matrixAusgabeD(einheitsVektor(Kreuz(p, q)));
-		System.out.println("einheitsvektor von u = " );
-		matrixAusgabeD(einheitsVektor(Kreuz(einheitsVektor(Kreuz(p, q)),p)));
+		
+		
+		System.out.println("u = " );
+		matrixAusgabeD(Kreuz(Kreuz(p,q),p));
+		
+		
+		
 		
 		
 		double c [][] = {{40},{50},{60}};
@@ -268,7 +282,7 @@ public class Matrix_VektorRechner {
 		double[][] zweiteHälfte=new double[3][1];
 		
 		for (int j = 0; j < 3; j++) {
-			zweiteHälfte[j][0] = r* Math.sin(t)*u[j][0];
+			zweiteHälfte[j][0] =r* r* Math.sin(t)*u[j][0];
 		}
 		
 		double[][] ergebnis= new double [3][1];

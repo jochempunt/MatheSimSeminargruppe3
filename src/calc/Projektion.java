@@ -4,7 +4,7 @@ public class Projektion {
 
 	public static  double alphaDegrees =Math.toRadians(145) ;
 	
-	public static  double s1Length =  0.5;
+	public static  double s1Length =  0.45;
 	
 	public static double phi = Math.atan(s1Length*Math.sin(alphaDegrees));
 	
@@ -29,7 +29,7 @@ public class Projektion {
 	public static double[][] umrissellipse(int r, double t) throws Exception{
 		
 		
-		double[][] point = {{0},{Math.cos(t)},{Math.sin(t)}};
+		double[][] point = {{0},{r* Math.cos(t)},{r*Math.sin(t)}};
 		
 		double[][] drehungX2 = {{Math.cos(teta),0,-Math.sin(teta)},{0,1,0},{Math.sin(teta),0,Math.cos(teta)}};
 		
@@ -65,6 +65,9 @@ public class Projektion {
 			
 			umrissellipse(1,1);
 			
+			
+			
+			System.out.println("phi ="+Math.toDegrees(phi)  +" theta = "+ Math.toDegrees(teta));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -67,8 +67,15 @@ public class test_framepanel_seminar extends JFrame {
 		btnNewButton.setBounds(46, 219, 116, 46);
 		panel_1.add(btnNewButton);
 		
-		
-		JComboBox comboBox = new JComboBox();
+		String[] hai = {"hallo","tschüss"};
+		JComboBox comboBox = new JComboBox(hai);
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					System.out.println(comboBox.getSelectedItem());
+				}
+			}
+		});
 	
 		
 		comboBox.setBounds(192, 231, 88, 26);
@@ -79,7 +86,7 @@ public class test_framepanel_seminar extends JFrame {
 		panel_1.add(comboBox_1);
 		
 		JButton btnNewButton_1 = new JButton("Wobble");
-		btnNewButton_1.setBounds(46, 276, 116, 46);
+		btnNewButton_1.setBounds(396, 456, 80, 26);
 		panel_1.add(btnNewButton_1);
 	}
 }

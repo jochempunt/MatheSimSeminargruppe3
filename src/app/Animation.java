@@ -7,12 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import calc.Matrix_VektorRechner;
-import calc.Projektion;
+import calc.Projection;
 import utils.ApplicationTime;
 import utils.FrameUpdate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.Timer;
 
 import java.awt.Graphics;
@@ -110,7 +110,6 @@ public class Animation {
 			}
 		});
 
-		
 		frame.setVisible(true);
 	}
 }
@@ -120,7 +119,7 @@ class GraphicsContent extends JPanel {
 
 	// panel has a single time tracking thread associated with it
 	private ApplicationTime t;
-	private double time;
+
 
 	public GraphicsContent(ApplicationTime thread) {
 		this.t = thread;
@@ -133,14 +132,14 @@ class GraphicsContent extends JPanel {
 
 	int mittelpunktXd = _0_Constants.WINDOW_WIDTH / 2;
 	int mittelpunktYd = _0_Constants.WINDOW_HEIGHT / 2;
-	int it = 0;
+	
 	int diameter = 5;
 
-	int vergrößerung = 1;
+
 
 	double bewegung = 0.0;
 
-	ArrayList<Punkt> punktListeVorne = new ArrayList<Punkt>();
+	ArrayList<Punkt> punktListeVorne = new ArrayList<Punkt>();// speichert alle Punkte die vorne gezeichnet werden, damit zuerst hinten gezeichnet werden kann
 
 	public void paintPunktObjekt(Punkt pPunkt, Graphics g) {
 		int[] pos = pPunkt.position;
@@ -156,16 +155,14 @@ class GraphicsContent extends JPanel {
 		punktListeVorne.clear();
 	}
 
-	public void paintVektor(double[][] startpoint, double[][] endpoint) {
-
-	}
+	
 
 	public void paintAnimatedGeoD(double bg1, double lg1, double bg2, double lg2, int r, Graphics g, Color c, int dicke,
 			double t) {
 		double[][] p = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg1, lg1, r), 2);
 		double[][] q = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg2, lg2, r), 2);
 		double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t * 15);
-		
+
 		boolean vorn = Matrix_VektorRechner.vorne(ergebnissPunkt);
 		Color punktColor = null;
 
@@ -174,23 +171,22 @@ class GraphicsContent extends JPanel {
 			punktColor = Matrix_VektorRechner.vornHintenColor(ergebnissPunkt, c);
 			g.setColor(punktColor);
 			try {
-				ergebnissPunkt = Projektion.projektiere(ergebnissPunkt);
+				ergebnissPunkt = Projection.projektiere(ergebnissPunkt);
 			} catch (Exception e) {
-				
+
 				e.printStackTrace();
 			}
 
 			int[] verschobevektor = new int[2];
 
-			verschobevektor[0] = (int) (ergebnissPunkt[0][0] * vergrößerung);
+			verschobevektor[0] = (int) (ergebnissPunkt[0][0]);
 
 			verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
 
-			verschobevektor[1] = (int) (ergebnissPunkt[1][0] * vergrößerung);
+			verschobevektor[1] = (int) (ergebnissPunkt[1][0] );
 
 			verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 
-			
 			paintGeodaetische(bg1, lg1, bg2, lg2, r, g, c, dicke / 3, bewegung * 15);
 			if (!vorn) {
 				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
@@ -216,7 +212,7 @@ class GraphicsContent extends JPanel {
 
 		for (double t = 0; t < max; t = t + 0.006) {
 			double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t);
-		
+
 			boolean vorn = Matrix_VektorRechner.vorne(ergebnissPunkt);
 			Color punktColor = null;
 			if (t < Matrix_VektorRechner.winkel(p, q)) {
@@ -231,7 +227,7 @@ class GraphicsContent extends JPanel {
 			}
 
 			try {
-				ergebnissPunkt = Projektion.projektiere(ergebnissPunkt);
+				ergebnissPunkt = Projection.projektiere(ergebnissPunkt);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -246,8 +242,6 @@ class GraphicsContent extends JPanel {
 			verschobevektor[1] = (int) (ergebnissPunkt[1][0]);
 
 			verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
-
-			
 
 			if (!vorn) {
 				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
@@ -265,47 +259,46 @@ class GraphicsContent extends JPanel {
 		boolean vorn = Matrix_VektorRechner.vorne(vektor);
 		Color punktColor = null;
 		try {
-			projeVektor = Projektion.projektiere(vektor);
+			projeVektor = Projection.projektiere(vektor);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int[] verschobevektor = new int[2];
 
-		verschobevektor[0] = (int) (r*projeVektor[0][0]);
+		verschobevektor[0] = (int) (r * projeVektor[0][0]);
 
 		verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
 
-		verschobevektor[1] = (int) (r*projeVektor[1][0]);
+		verschobevektor[1] = (int) (r * projeVektor[1][0]);
 
 		verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 
 		punktColor = Matrix_VektorRechner.vornHintenColor(vektor, c);
 		g.setColor(punktColor);
-		if(!vorn) {
+		if (!vorn) {
 			g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
-		}else {
-			punktListeVorne.add(new Punkt(verschobevektor,punktColor,dicke));
+		} else {
+			punktListeVorne.add(new Punkt(verschobevektor, punktColor, dicke));
 		}
-		
 
 	}
 
-	public void paintUmrissellipse(Graphics g, Color c, int dicke,int r) {
+	public void paintUmrissellipse(Graphics g, Color c, int dicke, int r) {
 
 		for (double i = 0; i < 2 * Math.PI; i = i + 0.006) {
 
 			try {
-				double point[][] = Matrix_VektorRechner.roundDoubleVektor(Projektion.umrissellipse(r, i), 2);
+				double point[][] = Matrix_VektorRechner.roundDoubleVektor(Projection.umrissellipse(r, i), 2);
 
-				point = Projektion.projektiere(point);
+				point = Projection.projektiere(point);
 				int[] verschobevektor = new int[2];
 
-				verschobevektor[0] = (int) (r* point[0][0] );
+				verschobevektor[0] = (int) (r * point[0][0]);
 
 				verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
 
-				verschobevektor[1] = (int) (r*point[1][0] );
+				verschobevektor[1] = (int) (r * point[1][0]);
 
 				verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 
@@ -323,17 +316,17 @@ class GraphicsContent extends JPanel {
 	public void paintVektorProjekted(double[][] vektor, Graphics g, Color c, int dicke) {
 		double projeVektor[][] = null;
 		try {
-			projeVektor = Projektion.projektiere(vektor);
+			projeVektor = Projection.projektiere(vektor);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		int[] verschobevektor = new int[2];
 
-		verschobevektor[0] = (int) (projeVektor[0][0] * vergrößerung);
+		verschobevektor[0] = (int) (projeVektor[0][0] );
 
 		verschobevektor[0] += _0_Constants.WINDOW_WIDTH / 2;
 
-		verschobevektor[1] = (int) (projeVektor[1][0] * vergrößerung);
+		verschobevektor[1] = (int) (projeVektor[1][0] );
 
 		verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 		g.setColor(c);
@@ -343,8 +336,8 @@ class GraphicsContent extends JPanel {
 
 	}
 
-	static double f = 150;
-	static double winkel = 2.0;
+
+	static double winkel = 2.0; // für den wobble effekt zuständig
 
 	// drawing operations should be done in this method
 	@Override
@@ -364,7 +357,7 @@ class GraphicsContent extends JPanel {
 		// paintVektorProjekted(x2, g, Color.green, diameter);
 		// paintVektorProjekted(x3, g, Color.blue, diameter);
 
-		int r = 13;
+		int r = 13; // r ist für den radius zuständig
 
 		double tmax = Math.PI * 2;
 
@@ -379,13 +372,9 @@ class GraphicsContent extends JPanel {
 		paintGeodaetische(0, 160, -89, 0, r, g, Color.black, 3, tmax);
 		paintGeodaetische(0, 0, 0, 179, r, g, Color.black, 3, tmax);
 
-		
-		
-		
-		
 		Ort ort1 = (Ort) Animation.ort1.getSelectedItem();
 		Ort ort2 = (Ort) Animation.ort2.getSelectedItem();
-		
+
 		paintPunktGrad(ort1.breitengrad, ort1.längengrad, r, g, Color.green, 20);
 		paintPunktGrad(ort2.breitengrad, ort2.längengrad, r, g, Color.green, 20);
 
@@ -394,18 +383,16 @@ class GraphicsContent extends JPanel {
 					bewegung);
 		}
 
-		
+		paintUmrissellipse(g, Color.black, 5, r);
 		paintVorne(g);
-		paintUmrissellipse(g, Color.black, 5,r);
 
 		if (Animation.wobble) {
-			Projektion.s1Length = 0.5 * Math.sin(winkel);
+			Projection.s1Length = 0.5 * Math.sin(winkel);
 			winkel = winkel - 0.3;
 		} else {
-			Projektion.s1Length = 0.45;
+			Projection.s1Length = 0.45;
 
 		}
-	
 
 	}
 }

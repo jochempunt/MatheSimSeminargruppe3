@@ -122,139 +122,105 @@ public class Matrix_VektorRechner {
 	}
 
 	public static double betrag(double[][] vektor) {
-		double betrag = Math.sqrt(Math.pow(Math.abs(vektor[0][0]), 2) + Math.pow(Math.abs(vektor[1][0]), 2) + Math.pow(Math.abs(vektor[2][0]), 2));
+		double betrag = Math.sqrt(Math.pow(Math.abs(vektor[0][0]), 2) + Math.pow(Math.abs(vektor[1][0]), 2)
+				+ Math.pow(Math.abs(vektor[2][0]), 2));
 		return betrag;
 	}
 
 	public static double winkel(double[][] p, double[][] q) {
-		double skalarProdukt = (p[0][0] * q[0][0]) +( p[1][0] * q[1][0]) +( p[2][0] * q[2][0]);
+		double skalarProdukt = (p[0][0] * q[0][0]) + (p[1][0] * q[1][0]) + (p[2][0] * q[2][0]);
 		double betragProdukt = betrag(p) * betrag(q);
-		return Math.acos(skalarProdukt/ betragProdukt);
+		return Math.acos(skalarProdukt / betragProdukt);
 	}
 
 	public static void main(String[] args) {
 
 		
-		System.out.println("-7 mod 2 = "+ (-3)%5);
+		//test der Funktionen
 		
-		double[][] p = lBGradIn3Dkoord(48.053 , 8.216, 1);
-		double[][] q = lBGradIn3Dkoord(-33.929,18.417 , 1);
-		
-		double[][] pp = {{0.662},{0.096},{0,744}};
-		
-		double[][] qq = {{0.787},{0.262},{-0,558}};
-		
-		
-		double [][]n = Kreuz(p,q);
-		System.out.println("n=" );
+
+		double[][] p = lBGradIn3Dkoord(48.053, 8.216, 1);
+		double[][] q = lBGradIn3Dkoord(-33.929, 18.417, 1);
+
+		double[][] pp = { { 0.662 }, { 0.096 }, { 0, 744 } };
+
+		double[][] qq = { { 0.787 }, { 0.262 }, { -0, 558 } };
+
+		double[][] n = Kreuz(p, q);
+		System.out.println("n=");
 		matrixAusgabeD(n);
-		
-		
-		
+
 		System.out.println("vektor p = ");
 		matrixAusgabeD(p);
 		System.out.println("vector q = ");
 		matrixAusgabeD(q);
-		
-		System.out.println("betrag von p = " +betrag(p));
-		System.out.println("betrag von q = "+ betrag(q));
-		System.out.println("winkel zw. p und q = " +Math.toDegrees(winkel(p, q)));
-		System.out.println("winkel zw. p und q = " +(winkel(p, q)));
-		
-		
-		//matrixAusgabeD(einheitsVektor(p));
+
+		System.out.println("betrag von p = " + betrag(p));
+		System.out.println("betrag von q = " + betrag(q));
+		System.out.println("winkel zw. p und q = " + Math.toDegrees(winkel(p, q)));
+		System.out.println("winkel zw. p und q = " + (winkel(p, q)));
+
 		System.out.println("n= ");
 		matrixAusgabeD(Kreuz(p, q));
-		
-		
-		System.out.println("u = " );
-		matrixAusgabeD(Kreuz(Kreuz(p,q),p));
-		
-		
-		
-		
-		
-		double c [][] = {{40},{50},{60}};
-		
+
+		System.out.println("u = ");
+		matrixAusgabeD(Kreuz(Kreuz(p, q), p));
+
+		double c[][] = { { 40 }, { 50 }, { 60 } };
+
 		System.out.println(vornHintenColor(c, Color.blue));
-		
-		
-		
-		
-		
-		
+
 	}
-	
+
 	protected static Color desaturate(Color color) {
-		
-		
-		
-		if(color.equals(Color.black)) {
-			
+
+		if (color.equals(Color.black)) {
+
 			return Color.gray;
-			
-			
+
 		}
-		
-		
-		
+
 		float[] hsbVal = new float[3];
-		
-		
+
 		hsbVal = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsbVal);
-		
-		hsbVal[1] = hsbVal[1]/2.0f;
-		
+
+		hsbVal[1] = hsbVal[1] / 2.0f;
+
 		return Color.getHSBColor(hsbVal[0], hsbVal[1], hsbVal[2]);
-		
-		
+
 	}
-	
-	
-	
+
 	public static boolean vorne(double[][] punkt) {
-		
-		double wert = Math.cos(Projektion.phi)*Math.cos(Projektion.teta)*punkt[0][0] + Math.sin(Projektion.phi)*Math.cos(Projektion.teta)*punkt[1][0]+ Math.sin(Projektion.teta)*punkt[2][0];
-		
-		
-	
-		
-		
-		if(wert<0) {
+
+		double wert = Math.cos(Projection.phi) * Math.cos(Projection.teta) * punkt[0][0]
+				+ Math.sin(Projection.phi) * Math.cos(Projection.teta) * punkt[1][0]
+				+ Math.sin(Projection.teta) * punkt[2][0];
+
+		if (wert < 0) {
 			return false;
-		}else {
+		} else {
 			return true;
-			
+
 		}
-		
+
 	}
-	
-	
-	
-	public static Color vornHintenColor(double[][] punkt,Color pColor) {
-		
-		
-		
-		double wert = Math.cos(Projektion.phi)*Math.cos(Projektion.teta)*punkt[0][0] + Math.sin(Projektion.phi)*Math.cos(Projektion.teta)*punkt[1][0]+ Math.sin(Projektion.teta)*punkt[2][0];
-		
-	
-		
-		
-		if(wert<0) {
-			
+
+	public static Color vornHintenColor(double[][] punkt, Color pColor) {
+
+		double wert = Math.cos(Projection.phi) * Math.cos(Projection.teta) * punkt[0][0]
+				+ Math.sin(Projection.phi) * Math.cos(Projection.teta) * punkt[1][0]
+				+ Math.sin(Projection.teta) * punkt[2][0];
+
+		if (wert < 0) {
+
 			return desaturate(pColor);
-		}else {
-		
+		} else {
+
 			return pColor;
-			
+
 		}
-		
-		
-		
-		
+
 	}
-	
-	
 
 	public static double[][] einheitsVektor(double[][] vektor) {
 		double betrag = betrag(vektor);
@@ -267,33 +233,30 @@ public class Matrix_VektorRechner {
 		return einheitsVektor;
 	}
 
-	public static double[][]funktion(double[][] p,double[][] q,int r,double t){
-		double [][]n =  einheitsVektor(Kreuz(p, q));
-		double [][]u = einheitsVektor(Kreuz(n, p));
-		double [][]pDach = einheitsVektor(p);
-		
-		
-		
+	public static double[][] funktion(double[][] p, double[][] q, int r, double t) {
+		double[][] n = einheitsVektor(Kreuz(p, q));
+		double[][] u = einheitsVektor(Kreuz(n, p));
+		double[][] pDach = einheitsVektor(p);
+
 		double[][] ersteHälfte = new double[3][1];
-		
-		for(int i =0;i<3;i++) {
-			ersteHälfte[i][0]= r* Math.cos(t) * p[i][0];
-		}
-		double[][] zweiteHälfte=new double[3][1];
-		
-		for (int j = 0; j < 3; j++) {
-			zweiteHälfte[j][0] =r* r* Math.sin(t)*u[j][0];
-		}
-		
-		double[][] ergebnis= new double [3][1];
-		
+
 		for (int i = 0; i < 3; i++) {
-			ergebnis[i][0]= ersteHälfte[i][0]+ zweiteHälfte[i][0];
+			ersteHälfte[i][0] = r * Math.cos(t) * p[i][0];
 		}
-		
-		
-		return roundDoubleVektor(ergebnis,2) ;
-		
+		double[][] zweiteHälfte = new double[3][1];
+
+		for (int j = 0; j < 3; j++) {
+			zweiteHälfte[j][0] = r * r * Math.sin(t) * u[j][0];
+		}
+
+		double[][] ergebnis = new double[3][1];
+
+		for (int i = 0; i < 3; i++) {
+			ergebnis[i][0] = ersteHälfte[i][0] + zweiteHälfte[i][0];
+		}
+
+		return roundDoubleVektor(ergebnis, 2);
+
 	}
 
 	public static int[][] rotationsMatrix() {

@@ -1,6 +1,6 @@
 package calc;
 
-public class Projektion {
+public class Projection {
 
 	public static  double alphaDegrees =Math.toRadians(145) ;
 	
@@ -52,15 +52,15 @@ public class Projektion {
 	
 	public static void main(String[] args) {
 		
-		
+		// test der Funktionen
 		System.out.println(Math.toRadians(150));
 		
 		
 		
 		try {
-			System.out.println("Furtwangen in 3D koord:");
+			System.out.println("Furtwangen in kartesischen-koord:");
 			Matrix_VektorRechner.matrixAusgabeD(projektiere(Matrix_VektorRechner.lBGradIn3Dkoord(48.052,8.216,1)));
-			System.out.println("Kapstadt in 3D koord:");
+			System.out.println("Kapstadt in Kartesischen koord:");
 			Matrix_VektorRechner.matrixAusgabeD(projektiere(Matrix_VektorRechner.lBGradIn3Dkoord(-33.928,18.417,1)));
 			
 			umrissellipse(1,1);

@@ -3,8 +3,12 @@ package app;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import calc.Matrix_VektorRechner;
 import calc.Projection;
@@ -23,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 public class Animation {
 
@@ -31,6 +36,10 @@ public class Animation {
 	public static boolean ausführen = false;
 	public static JComboBox<Ort> ort1;
 	public static JComboBox<Ort> ort2;
+	private static JLabel lblNewLabel;
+	
+	public static JSlider slider;
+	
 
 	public static Ort[] orteListe = { new Ort(48.050144, 8.201419, "Furtwangen"),
 			new Ort(-33.867487, 151.206990, "Sidney"), new Ort(40.712784, -74.005941, "New York"),
@@ -86,15 +95,7 @@ public class Animation {
 		ort2.setBounds(310, 231, 88, 26);
 		panel_1.add(ort2);
 
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ort1.setEnabled(false);
-				ort2.setEnabled(false);
-				ausführen = true;
-
-			}
-		});
-
+	
 		JButton btnNewButton_1 = new JButton("Wobble");// experimenteller Button
 		btnNewButton_1.setBounds(396, 456, 80, 26);
 		panel_1.add(btnNewButton_1);
@@ -110,6 +111,43 @@ public class Animation {
 			}
 		});
 
+		
+		
+		
+		JSlider slider = new JSlider(1,20);
+		slider.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		slider.setBounds(46, 300, 200, 26);
+		panel_1.add(slider);
+	    
+		
+		lblNewLabel = new JLabel("Geschwindigkeit = " + slider.getValue());
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setBounds(50, 315, 125, 31);
+		panel_1.add(lblNewLabel);
+		
+		
+		slider.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				lblNewLabel.setText("Geschwindigkeit = " + slider.getValue());
+				GraphicsContent.geschwindigkeit = slider.getValue();
+			}
+		});
+		
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ort1.setEnabled(false);
+				ort2.setEnabled(false);
+				ausführen = true;
+
+			}
+		});
+
+		
+		
+		
 		frame.setVisible(true);
 	}
 }
@@ -134,7 +172,8 @@ class GraphicsContent extends JPanel {
 	int mittelpunktYd = _0_Constants.WINDOW_HEIGHT / 2;
 	
 	int diameter = 5;
-
+	
+	public static int geschwindigkeit = 10;
 
 
 	double bewegung = 0.0;
@@ -161,12 +200,12 @@ class GraphicsContent extends JPanel {
 			double t) {
 		double[][] p = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg1, lg1, r), 2);
 		double[][] q = Matrix_VektorRechner.roundDoubleVektor(Matrix_VektorRechner.lBGradIn3Dkoord(bg2, lg2, r), 2);
-		double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t * 15);
+		double[][] ergebnissPunkt = Matrix_VektorRechner.funktion(p, q, r, t * geschwindigkeit);
 
 		boolean vorn = Matrix_VektorRechner.vorne(ergebnissPunkt);
 		Color punktColor = null;
 
-		if (t < (Matrix_VektorRechner.winkel(p, q) / 15)) {
+		if (t < (Matrix_VektorRechner.winkel(p, q) / geschwindigkeit)) {
 
 			punktColor = Matrix_VektorRechner.vornHintenColor(ergebnissPunkt, c);
 			g.setColor(punktColor);
@@ -187,7 +226,7 @@ class GraphicsContent extends JPanel {
 
 			verschobevektor[1] += _0_Constants.WINDOW_HEIGHT / 2;
 
-			paintGeodaetische(bg1, lg1, bg2, lg2, r, g, c, dicke / 3, bewegung * 15);
+			paintGeodaetische(bg1, lg1, bg2, lg2, r, g, c, dicke / 3, bewegung * geschwindigkeit);
 			if (!vorn) {
 				g.fillOval(verschobevektor[0] - dicke / 2, verschobevektor[1] - dicke / 2, dicke, dicke);
 			} else {
@@ -200,6 +239,8 @@ class GraphicsContent extends JPanel {
 			Animation.ausführen = false;
 			Animation.ort1.setEnabled(true);
 			Animation.ort2.setEnabled(true);
+
+			
 			bewegung = 0.0;
 		}
 
@@ -375,9 +416,14 @@ class GraphicsContent extends JPanel {
 		Ort ort1 = (Ort) Animation.ort1.getSelectedItem();
 		Ort ort2 = (Ort) Animation.ort2.getSelectedItem();
 
+		
+		
 		paintPunktGrad(ort1.breitengrad, ort1.längengrad, r, g, Color.green, 20);
 		paintPunktGrad(ort2.breitengrad, ort2.längengrad, r, g, Color.green, 20);
 
+		
+		
+		
 		if (Animation.ausführen) {
 			paintAnimatedGeoD(ort1.breitengrad, ort1.längengrad, ort2.breitengrad, ort2.längengrad, r, g, Color.red, 20,
 					bewegung);
